@@ -35,16 +35,7 @@ def exp_beta_schedule(timesteps, beta_min=0.1, beta_max=10):
 
 
 def betas_for_alpha_bar(num_diffusion_timesteps, alpha_bar, max_beta=0.999):
-    """
-    Create a beta schedule that discretizes the given alpha_t_bar function,
-    which defines the cumulative product of (1-beta) over time from t = [0,1].
-    :param num_diffusion_timesteps: the number of betas to produce.
-    :param alpha_bar: a lambda that takes an argument t from 0 to 1 and
-                      produces the cumulative product of (1-beta) up to that
-                      part of the diffusion process.
-    :param max_beta: the maximum beta to use; use values lower than 1 to
-                     prevent singularities.
-    """
+
     betas = []
     for i in range(num_diffusion_timesteps):
         t1 = i / num_diffusion_timesteps
@@ -69,9 +60,6 @@ class PointWiseFeedForward(torch.nn.Module):
         outputs += inputs
         return outputs
 
-# pls use the following self-made multihead attention layer
-# in case your pytorch version is below 1.16 or for other reasons
-# https://github.com/pmixer/TiSASRec.pytorch/blob/master/model.py
 
 class SASRec(torch.nn.Module):
     def __init__(self, item_num,args):
@@ -82,8 +70,6 @@ class SASRec(torch.nn.Module):
         self.dev = args.device
 
 
-        # TODO: loss += args.l2_emb for regularizing embedding vectors during training
-        # https://stackoverflow.com/questions/42704283/adding-l1-l2-regularization-in-pytorch
         self.item_emb = torch.nn.Embedding(self.item_num + 1, args.hidden_units, padding_idx=0)
         self.pos_emb = torch.nn.Embedding(args.max_len, args.hidden_units)  # TO IMPROVE
         self.emb_dropout = torch.nn.Dropout(p=args.dropout_rate)

@@ -95,8 +95,6 @@ def main():
         t_test = evaluate(model, test_data_loader, args)
         print('test (NDCG@10: %.4f, HR@10: %.4f)' % (t_test[0], t_test[1]))
 
-    # ce_criterion = torch.nn.CrossEntropyLoss()
-    # https://github.com/NVIDIA/pix2pixHD/issues/9 how could an old bug appear again...
     # bce_criterion = torch.nn.BCEWithLogitsLoss() # torch.nn.BCELoss()
     ce_criterion = torch.nn.CrossEntropyLoss()
     adam_optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, betas=(0.9, 0.98))
@@ -109,7 +107,6 @@ def main():
     K_can = [1, 3, 5, 10, 20, 50, 100]
     count_n=0
     traintime=0
-    text_time=0
     for epoch in range(epoch_start_idx, args.num_epochs + 1):
         total_loss=0.
         num_batch=0.
